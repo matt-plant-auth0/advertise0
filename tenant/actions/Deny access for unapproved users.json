@@ -1,0 +1,15 @@
+{
+  "name": "Deny access for unapproved users",
+  "code": "tenant/actions/Deny access for unapproved users/code.js",
+  "runtime": "node16",
+  "status": "built",
+  "dependencies": [],
+  "secrets": [],
+  "supported_triggers": [
+    {
+      "id": "post-login",
+      "version": "v3"
+    }
+  ],
+  "deployed": true
+}

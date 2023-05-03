@@ -1,0 +1,17 @@
+{
+  "name": "london-clinic",
+  "display_name": "London Clinic",
+  "branding": {
+    "logo_url": "https://www.thelondonclinic.co.uk/themes/custom/tlc/images/tlc.png",
+    "colors": {
+      "page_background": "#FFFFFF",
+      "primary": "#1e6099"
+    }
+  },
+  "connections": [
+    {
+      "name": "global-database",
+      "assign_membership_on_login": true
+    }
+  ]
+}

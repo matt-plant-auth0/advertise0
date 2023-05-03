@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "credentials": {
+    "smtp_host": "smtp.mailtrap.io",
+    "smtp_port": 2525,
+    "smtp_user": "MAILTRAP_USER",
+    "smtp_pass": "MAILTRAP_PASS"
+  },
+  "name": "smtp",
+  "default_from_address": "advertise0 <admin@advertise0.com>"
+}

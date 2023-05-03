@@ -1,0 +1,10 @@
+{
+  "name": "Organisation Admins",
+  "description": "Organisation Admins",
+  "permissions": [
+    {
+      "permission_name": "add:users",
+      "resource_server_identifier": "advertise0-permissions"
+    }
+  ]
+}

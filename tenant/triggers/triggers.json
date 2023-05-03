@@ -1,0 +1,16 @@
+{
+  "post-login": [
+    {
+      "action_name": "Move name from metadata post invite acceptance",
+      "display_name": "Move name from metadata post invite acceptance"
+    },
+    {
+      "action_name": "Deny access for unapproved users",
+      "display_name": "Deny access for unapproved users"
+    },
+    {
+      "action_name": "Check if a user belongs to multiple organisations",
+      "display_name": "Check if a user belongs to multiple organisations"
+    }
+  ]
+}

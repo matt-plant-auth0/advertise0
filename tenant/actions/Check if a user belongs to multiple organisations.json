@@ -1,0 +1,24 @@
+{
+  "name": "Check if a user belongs to multiple organisations",
+  "code": "tenant/actions/Check if a user belongs to multiple organisations/code.js",
+  "runtime": "node16",
+  "status": "built",
+  "dependencies": [
+    {
+      "name": "axios",
+      "version": "0.27.2"
+    },
+    {
+      "name": "auth0",
+      "version": "2.42.0"
+    }
+  ],
+  "secrets": [],
+  "supported_triggers": [
+    {
+      "id": "post-login",
+      "version": "v3"
+    }
+  ],
+  "deployed": true
+}

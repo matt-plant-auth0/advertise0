@@ -1,0 +1,14 @@
+{
+  "name": "advertise0 Admins",
+  "description": "Main advertise0 Admin Role",
+  "permissions": [
+    {
+      "permission_name": "update:all",
+      "resource_server_identifier": "advertise0-permissions"
+    },
+    {
+      "permission_name": "view:all",
+      "resource_server_identifier": "advertise0-permissions"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Move name from metadata post invite acceptance",
+  "code": "tenant/actions/Move name from metadata post invite acceptance/code.js",
+  "runtime": "node16",
+  "status": "built",
+  "dependencies": [
+    {
+      "name": "auth0",
+      "version": "2.42.0"
+    }
+  ],
+  "secrets": [],
+  "supported_triggers": [
+    {
+      "id": "post-login",
+      "version": "v3"
+    }
+  ],
+  "deployed": true
+}

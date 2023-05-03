@@ -1,0 +1,17 @@
+{
+  "name": "hca",
+  "display_name": "HCA Healthcare",
+  "branding": {
+    "logo_url": "https://hcacareers.co.uk/wp-content/uploads/2020/01/HCAUK_HealthcareLogo_RGB.png",
+    "colors": {
+      "page_background": "#FFFFFF",
+      "primary": "#6bc7c5"
+    }
+  },
+  "connections": [
+    {
+      "name": "global-database",
+      "assign_membership_on_login": true
+    }
+  ]
+}
