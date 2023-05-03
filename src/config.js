@@ -15,7 +15,9 @@ export function getConfig() {
   return {
     domain: configJson.domain,
     clientId: configJson.clientId,
-    apiOrigin: "https://local.a0.gg:3001",
+    appOrigin: configJson.appOrigin,
+    apiOrigin: `${configJson.appOrigin}:3001`,
+    //apiOrigin: "https://local.a0.gg:3001",
     ...(audience ? { audience } : null),
   };
 }
