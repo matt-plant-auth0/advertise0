@@ -12,8 +12,8 @@ exports.onExecutePostLogin = async (event, api) => {
 	const managementClientInstance = new ManagementClient({
 		// These come from a machine-to-machine application
 		domain: 'advertise0.eu.auth0.com',
-		clientId: 'SAL1j9qXb26JkThuobZwPPGdhxHKtglp',
-		clientSecret: 'I9qzV7reLe8U_n26Lxr-RnjGcj272eLd0YriIXwv8U7q33kfJUc6ITg1uPbXBjEn',
+		clientId: 'MANAGEMENT_API_APP_CLIENT_ID',
+		clientSecret: 'MANAGEMENT_API_APP_CLIENT_SECRET',
 		scope: "update:users"
 	});
 
