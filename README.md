@@ -17,6 +17,6 @@ This does rely on a `./src/auth_config.json` file that holds all tenant info - t
 }
 ```
 
-Note: `appOrigin` property is used to create relative URLs in the React APP
+Note: `appOrigin` property is used to create full URLs in the React APP and therefore needs to point to your own hosted SPA
 
 As you can see the tenant does require some setup (not least due to some Actions also being required to facilitate the React app) - as such I have exported my tenant using the Deploy CLI into the `tenant` folder (using the `-f directory` CLI flag to export the tenant config as `.json` files) which can be imported as is. More details on the Deploy CLI tool can be found here:  https://github.com/auth0/auth0-deploy-cli#documentation
