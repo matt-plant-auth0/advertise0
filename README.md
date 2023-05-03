@@ -6,6 +6,7 @@ Standard `npm install` to grab packages
 
 This does rely on a `./src/auth_config.json` file that holds all tenant info - this should be in the format as follows:
 
+```json
 {
   "domain": "AUTH0 TENANT DOMAIN",
   "clientId": "REACT_APP_CLIENT_ID",
@@ -14,6 +15,7 @@ This does rely on a `./src/auth_config.json` file that holds all tenant info - t
   "m2m_secret": "MANAGEMENT_API_APP_CLIENT_SECRET",
   "appOrigin": "https://local.a0.gg"
 }
+```
 
 Note: `appOrigin` property is used to create relative URLs in the React APP
 
