@@ -29,8 +29,8 @@ exports.onExecutePostLogin = async (event, api) => {
     // Return all the organisations the user belongs to
     organisations = await getOrgs();
 
-    api.accessToken.setCustomClaim("https://steris.com/current_organisation", event.organization);
-    api.accessToken.setCustomClaim("https://steris.com/organisations", organisations);
+    api.accessToken.setCustomClaim("https://advertise0.com/current_organisation", event.organization);
+    api.accessToken.setCustomClaim("https://advertise0.com/organisations", organisations);
 };
 
 

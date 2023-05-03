@@ -1,0 +1,17 @@
+{
+  "name": "national-highways",
+  "display_name": "National Highways",
+  "branding": {
+    "logo_url": "https://nationalhighways.co.uk/Themes/Corporate/img/logos/national-highways/svg/national-highways_rgb.svg",
+    "colors": {
+      "page_background": "#ffffff",
+      "primary": "#0073a6"
+    }
+  },
+  "connections": [
+    {
+      "name": "global-database",
+      "assign_membership_on_login": false
+    }
+  ]
+}

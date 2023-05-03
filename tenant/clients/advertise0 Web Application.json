@@ -34,7 +34,7 @@
       "enabled": false
     }
   },
-  "logo_uri": "https://www.logolynx.com/images/logolynx/2c/2c2f0ba19fb381535cb5cf6f101a76bf.jpeg",
+  "logo_uri": "",
   "organization_require_behavior": "no_prompt",
   "organization_usage": "allow",
   "initiate_login_uri": "https://local.a0.gg:3000/login",

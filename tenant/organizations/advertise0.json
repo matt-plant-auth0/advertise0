@@ -2,10 +2,10 @@
   "name": "advertise0",
   "display_name": "advertise0",
   "branding": {
-    "logo_url": "https://www.steris-ast.com/wp-content/uploads/2020/06/STERIS_AST_Logo.png",
+    "logo_url": "https://raw.githubusercontent.com/matt-plant-auth0/public-cdn/main/advertise0_logo.png",
     "colors": {
       "page_background": "#FFFFFF",
-      "primary": "#5188b8"
+      "primary": "#0059a6"
     }
   },
   "connections": [

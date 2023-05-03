@@ -1,0 +1,17 @@
+{
+  "name": "tfl",
+  "display_name": "TFL",
+  "branding": {
+    "logo_url": "https://s3-eu-west-1.amazonaws.com/ehq-production-europe/1be47e799bf65be890d67fbf275614e58c244da0/original/1620026463/70b78d6102f636c56f0474bae7905a26_0e5cfc554117be9a7a944e1fc2ba8716_logo-transport-new.png?1620026463",
+    "colors": {
+      "page_background": "#ffffff",
+      "primary": "#3F75A4"
+    }
+  },
+  "connections": [
+    {
+      "name": "global-database",
+      "assign_membership_on_login": false
+    }
+  ]
+}
