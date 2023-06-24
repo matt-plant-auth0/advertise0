@@ -4,15 +4,17 @@ const authConfig = require("./../src/auth_config.json");
 
 const request = async (url, method, body) => {
     const token = await _m2m.getToken();
-    console.log ('m2 token' , token)
+    // console.log ('m2 token' , token)
     let options = {
         method,
         headers: {
             ...(method !== 'GET' || method !== 'DELETE') && { 'Content-Type': 'application/json' },
             'Authorization': `Bearer ${token}`
         },
-        ...body && { body: JSON.stringify(body) }
     };
+    if (method.toLowerCase () != "get") {
+        options = {...options, body: JSON.stringify (body)}
+    }
     return new Promise((resolve) => {
         fetch(url, options).then(async res => {
             let e;

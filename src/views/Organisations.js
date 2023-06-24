@@ -61,6 +61,8 @@ const Organisations = () => {
                 const token = await getAccessTokenSilently();
                 console.log ('got token ', token);
                 const organisations = await fetch(`${apiOrigin}/organisations`, {
+                    method: "GET",
+                    body: null,
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
