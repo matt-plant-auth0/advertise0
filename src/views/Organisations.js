@@ -55,16 +55,18 @@ const Organisations = () => {
     ];
 
     useEffect(() => {
+        console.log ('start: get orgs');
         const getOrgsData = async () => {
             try {
                 const token = await getAccessTokenSilently();
+                console.log ('got token ', token);
                 const organisations = await fetch(`${apiOrigin}/organisations`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
                 });
                 const responseData = await organisations.json();
-
+                console.log ('got orgs ', responseData);
                 let rows = [];
 
                 for await (const org of responseData.data) {
@@ -74,6 +76,7 @@ const Organisations = () => {
                         name: org.display_name
                     });
                 }
+                
                 setState({
                     ...state,
                     showResult: true,
@@ -89,7 +92,7 @@ const Organisations = () => {
         getOrgsData();
     }, [getAccessTokenSilently]);
 
-    return (
+    return (<>   
         <div className="ml-5 mr-5" style={{ height: '100%' }}>
             {!state.showResult &&
                 <Box sx={{ display: 'flex' }}>
@@ -107,7 +110,7 @@ const Organisations = () => {
                 />
             )}
         </div>
-    );
+    </>);
 }
 
 export default withAuthenticationRequired(Organisations, {

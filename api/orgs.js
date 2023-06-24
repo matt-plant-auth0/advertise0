@@ -4,6 +4,7 @@ const authConfig = require("./../src/auth_config.json");
 
 const request = async (url, method, body) => {
     const token = await _m2m.getToken();
+    console.log ('m2 token' , token)
     let options = {
         method,
         headers: {
@@ -38,7 +39,11 @@ const request = async (url, method, body) => {
 
 // Get Orgs Data
 const getMembersOfOrganisation = async (req, res) => {
-    const data = await request(`https://${authConfig.domain}/api/v2/organizations/${req.params.id}/members`, 'GET', null);
+    const data = await request(`https://${authConfig.domain}/api/v2/organizations/${req.params.id}/members`, 'GET', {
+        header: {
+            ...req.headers 
+        }
+    });
     res.send(data);
 }
 
@@ -49,7 +54,7 @@ const getOrganisations = async (req, res) => {
 
 // Add Orgs Data
 const createOrganisation = async (req, res) => {
-    const data = await request(`https://${authConfig.domain}/api/v2/organizations`, 'POST', req.body);
+    const data = await request(`https://${authConfig.domain}/api/v2/organizations`, 'POST', null);
     res.send(data);
 };
 

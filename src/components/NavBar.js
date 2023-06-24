@@ -160,7 +160,7 @@ const NavBar = () => {
                     color="primary"
                     className="btn-margin"
                     onClick={() => loginWithRedirect({
-                      organization: "org_wqp0oJUwA3N4B502"
+                      organization: "org_VJgDsCN2VxMpuAz0"
                     })}
                   >
                     Log in
@@ -206,7 +206,7 @@ const NavBar = () => {
                     color="primary"
                     block
                     onClick={() => loginWithRedirect({
-                      organization: "org_wqp0oJUwA3N4B502"
+                      organization: "org_VJgDsCN2VxMpuAz0"
                     })}
                   >
                     Log in

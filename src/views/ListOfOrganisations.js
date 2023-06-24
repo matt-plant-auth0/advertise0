@@ -40,6 +40,7 @@ const ListOfOrganisations = () => {
             try {
                 const token = await getAccessTokenSilently();
                 const access_token = jwt_decode(token);
+                console.log(access_token)
                 const organisations = access_token["https://advertise0.com/organisations"];
                 if (organisations.length === 1) { window.location.href = "/" }
                 console.log(organisations);
@@ -57,13 +58,14 @@ const ListOfOrganisations = () => {
         getPermissionsData();
     }, [getAccessTokenSilently]);
 
-    return (
-        state.organisations.map(organisation => (
+    return (<>
+        {state?.organisations && state?.organisations.length == 0 && <> As an Ocado admin you are not an admin for any Suppliers </>}
+        {state.organisations.map(organisation => (
             <List sx={{ width: '500', margin: '2em 42% 0', height: "100px", textAlign: 'center' }} >
                 <ListItem alignItems="flex-start">
                     <ListItemAvatar>
-                        {organisation.branding.logo_url && (<Avatar sx={{ width: 50, height: 50 }} src={ organisation.branding.logo_url } variant="square"></Avatar>)}
-                        {!organisation.branding.logo_url && (<Avatar sx={{ bgcolor: organisation.branding.colors.primary }}>{ organisation.display_name.slice(0, 2).toUpperCase() }</Avatar>)}
+                        {organisation.branding.logo_url && (<Avatar sx={{ width: 50, height: 50 }} src={organisation.branding.logo_url} variant="square"></Avatar>)}
+                        {!organisation.branding.logo_url && (<Avatar sx={{ bgcolor: organisation.branding.colors.primary }}>{organisation.display_name.slice(0, 2).toUpperCase()}</Avatar>)}
                     </ListItemAvatar>
                     <ListItemText
                         primary={organisation.display_name}
@@ -75,7 +77,10 @@ const ListOfOrganisations = () => {
                                     variant="body2"
                                     color="text.primary"
                                 >
-                                    <a href="javascript:;" onClick={() =>  loginWithRedirect({ organization: organisation.id, redirectUri: 'https://local.a0.gg:3000/' }) }>Sign In</a>
+                                    <a href="javascript:;" onClick={() => loginWithRedirect({ 
+                                        organization: organisation.id, 
+                                        // redirectUri: 'https://local.a0.gg:3000/'
+                                     })}>Sign In</a>
                                 </Typography>
                             </React.Fragment>
                         }
@@ -83,6 +88,7 @@ const ListOfOrganisations = () => {
                 </ListItem>
             </List >
         ))
+        } </>
     );
 };
 
