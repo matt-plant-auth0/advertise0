@@ -24,11 +24,12 @@ const OrgUsers = () => {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 250 },
-        { field: 'picture', headerName: 'Picture', width: 60,
-            renderCell: (params)=>{
+        {
+            field: 'picture', headerName: 'Picture', width: 60,
+            renderCell: (params) => {
                 return (
                     <div class="d-flex justify-content-center">
-                        <img style={{'border-radius': '50%'}} src={params.row.picture} alt='' height={30} />
+                        <img style={{ 'border-radius': '50%' }} src={params.row.picture} alt='' height={30} />
                     </div>
                 )
             }
@@ -60,7 +61,7 @@ const OrgUsers = () => {
                         }
                     });
                     const userResData = await user.json();
-                    if(userResData.data.app_metadata?.adminApproved){
+                    if (userResData.data.app_metadata?.adminApproved) {
                         rows.push({
                             id: org.user_id,
                             picture: org.picture,
@@ -91,8 +92,12 @@ const OrgUsers = () => {
                     <CircularProgress />
                 </Box>
             }
-            {state.showResult && 
-                <h3 className="m-4">List of members of your organisation</h3>
+            {state.showResult &&
+                <>
+                    <h3 className="m-4">List of members of your organisation</h3>
+                    <h3 className="m-4"> <img src={JSON.parse(sessionStorage.getItem('organisation')).logo} style={{width: 'auto', maxHeight: '50px'}}/> {JSON.parse(sessionStorage.getItem('organisation')).name}</h3>
+                    <p className="m-4">Users who have not yet been approved will not show in this list</p>
+                </>
             }
             {state.showResult && (
                 <DataGrid
