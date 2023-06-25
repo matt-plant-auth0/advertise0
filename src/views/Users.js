@@ -66,7 +66,8 @@ const OrgUsers = () => {
                             id: org.user_id,
                             picture: org.picture,
                             name: org.name,
-                            email: org.email
+                            email: org.email,
+                            
                         });
                     }
                 }

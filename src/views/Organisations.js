@@ -21,6 +21,13 @@ const Organisations = () => {
         error: null,
     });
 
+    const redirectModify = (id, data) => {
+        sessionStorage.setItem("organisationId", id);
+        console.log(data);
+        sessionStorage.setItem("organisation", JSON.stringify(data.row));
+        window.location.href = "/modify";
+    }
+
     const redirectInvite = (id, data) => {
         sessionStorage.setItem("organisationId", id);
         console.log(data);
@@ -37,29 +44,43 @@ const Organisations = () => {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 250 },
-        { field: 'logo', headerName: 'Logo', width: 230,
-            renderCell: (params)=>{
+        {
+            field: 'logo', headerName: 'Logo', width: 230,
+            renderCell: (params) => {
                 return (
                     <img src={params.row.logo} alt='' height={30} />
                 )
             }
         },
-        { field: 'name', headerName: 'Organisation\'s name', width: 250},
-        { field: 'actions', headerName: 'Action', width: 500,
-            renderCell: (params)=>{
+        { field: 'name', headerName: 'Organisation\'s name', width: 250 },
+        {
+            field: 'actions', headerName: 'Action', width: 500,
+            renderCell: (params) => {
                 return (
-                    <><a href="#" onClick={() => { redirectInvite(params.row.id, params)}}>Invite users</a>&nbsp;|&nbsp;<a href="#" onClick={() => { redirectUsers(params.row.id, params)}}>View all users in org</a></>
+                    <>
+                        <a href="#" onClick={() => { redirectInvite(params.row.id, params) }}>
+                            Create or view Invites
+                        </a>
+                        &nbsp;|&nbsp;
+                        <a href="#" onClick={() => { redirectUsers(params.row.id, params) }}>
+                            View all users in org
+                        </a>
+                        &nbsp;|&nbsp;
+                        <a href="#" onClick={() => { redirectModify(params.row.id, params) }}>
+                            Modify org details
+                        </a>
+                    </>
                 )
             }
         }
     ];
 
     useEffect(() => {
-        console.log ('start: get orgs');
+        console.log('start: get orgs');
         const getOrgsData = async () => {
             try {
                 const token = await getAccessTokenSilently();
-                console.log ('got token ', token);
+                console.log('got token ', token);
                 const organisations = await fetch(`${apiOrigin}/organisations`, {
                     method: "GET",
                     body: null,
@@ -68,7 +89,7 @@ const Organisations = () => {
                     }
                 });
                 const responseData = await organisations.json();
-                console.log ('got orgs ', responseData);
+                console.log('got orgs ', responseData);
                 let rows = [];
 
                 for await (const org of responseData.data) {
@@ -78,7 +99,7 @@ const Organisations = () => {
                         name: org.display_name
                     });
                 }
-                
+
                 setState({
                     ...state,
                     showResult: true,
@@ -94,14 +115,14 @@ const Organisations = () => {
         getOrgsData();
     }, [getAccessTokenSilently]);
 
-    return (<>   
+    return (<>
         <div className="ml-5 mr-5" style={{ height: '100%' }}>
             {!state.showResult &&
                 <Box sx={{ display: 'flex' }}>
                     <CircularProgress />
                 </Box>
             }
-            {state.showResult && 
+            {state.showResult &&
                 <h3 className="m-4">List of Organisations</h3>
             }
             {state.showResult && (
