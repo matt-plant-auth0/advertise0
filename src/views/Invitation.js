@@ -29,7 +29,7 @@ const OrganisationsInvitation = () => {
         showResult: false,
         apiData: [],
         error: null,
-        roles: null
+        roles: []
     });
 
     const organisation = sessionStorage.getItem("organisation") ? JSON.parse(sessionStorage.getItem("organisation")).display_name : "Null";
@@ -87,12 +87,14 @@ const OrganisationsInvitation = () => {
                 ...state,
                 roles: responseData.data
             });
+            debugger;
         } catch (error) {
             console.log(error);
         }
     }
 
-    const getOrgsData = async () => {
+    const getOrgsData = async () => {;
+
         try {
             const token = await getAccessTokenSilently();
             const invitation = await fetch(`${apiOrigin}/organisation/invites/${sessionStorage.getItem("organisationId")}`, {
@@ -154,7 +156,8 @@ const OrganisationsInvitation = () => {
                 error: error.error,
             });
         }
-    };
+    }; 
+    
 
     const isInvitationExpired = (expiryTime) => {
         let currentTimeUnix = new Date().getTime();
@@ -217,6 +220,7 @@ const OrganisationsInvitation = () => {
 
     useEffect(() => {
         getOrgsData();
+        getRoles()
     }, [getAccessTokenSilently]);
 
     const renderActionButton = (params) => {
