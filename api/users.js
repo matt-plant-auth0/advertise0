@@ -94,7 +94,7 @@ const changePassword = async (req, res) => {
         connection: currentIdentity.connection
     });
     
-    res.send({resetPassword, email: userInfo.data.email, connection: currentIdentity.connection});
+    res.send({ ...resetPassword});
 
 }
 

@@ -7,8 +7,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import jwt_decode from "jwt-decode";
+import { message } from 'antd';
 
 const OrgUsers = () => {
+
+    const [messageApi, contextHolder] = message.useMessage();
     const { apiOrigin, audience } = getConfig();
 
     const {
@@ -35,7 +38,7 @@ const OrgUsers = () => {
                 },
                 body: JSON.stringify({
                     user_id: userID,
-                    data:{
+                    data: {
                         app_metadata: { adminApproved: true }
                     }
                 })
@@ -52,8 +55,14 @@ const OrgUsers = () => {
     }
 
     const triggerResetPassword = async (id) => {
-        console.log ('start: reset password', id)
-      
+
+        messageApi.open({
+            key: 'trigger-password-reset',
+            type: 'loading',
+            content: 'sending password reset email ...',
+        });
+
+
         const token = await getAccessTokenSilently();
         const access_token = jwt_decode(token);
         // const current_organisation = sessionStorage.getItem("organisationId") ? sessionStorage.getItem("organisationId") : access_token["https://advertise0.com/current_organisation"].id;
@@ -64,6 +73,23 @@ const OrgUsers = () => {
             method: "POST"
         });
         const responseData = await changePassword.json();
+
+        if (responseData._success) {
+            messageApi.open({
+                key: 'trigger-password-reset',
+                type: 'success',
+                content: 'Password reset email sent!',
+                duration: 2,
+            });
+        }else {
+            messageApi.open({
+                key: 'trigger-password-reset',
+                type: 'error',
+                content: "That did't work please try again.",
+                duration: 2,
+            });
+        }
+
     }
 
 
@@ -78,8 +104,8 @@ const OrgUsers = () => {
                     onClick={(e) => {
                         e.preventDefault();
                         triggerResetPassword(params.row.id);
-                        console.log ('params ', params.row.id)
-                        
+                        console.log('params ', params.row.id)
+
                     }}
                 >
                     Reset password
@@ -101,7 +127,7 @@ const OrgUsers = () => {
         },
         { field: 'name', headerName: 'Name', width: "200" },
         { field: 'email', headerName: 'Email', width: "400" },
-        { field: 'action', headerName: 'Action', width: "200", renderCell: renderActionButton, disableClickEventBubbling: true}
+        { field: 'action', headerName: 'Action', width: "200", renderCell: renderActionButton, disableClickEventBubbling: true }
     ];
 
 
@@ -134,7 +160,7 @@ const OrgUsers = () => {
                             picture: org.picture,
                             name: org.name,
                             email: org.email,
-                            
+
                         });
                     }
                 }
@@ -154,7 +180,7 @@ const OrgUsers = () => {
     }, [getAccessTokenSilently]);
 
     return (
-        <div className="ml-5 mr-5" style={{ height: '100%' }}>
+        <>  {contextHolder}        <div className="ml-5 mr-5" style={{ height: '100%' }}>
             {!state.showResult &&
                 <Box sx={{ display: 'flex' }}>
                     <CircularProgress />
@@ -163,7 +189,7 @@ const OrgUsers = () => {
             {state.showResult &&
                 <>
                     <h3 className="m-4">List of members of your organisation</h3>
-                    <h3 className="m-4"> <img src={JSON.parse(sessionStorage.getItem('organisation')).logo} style={{width: 'auto', maxHeight: '50px'}}/> {JSON.parse(sessionStorage.getItem('organisation')).name}</h3>
+                    <h3 className="m-4"> <img src={JSON.parse(sessionStorage.getItem('organisation')).logo} style={{ width: 'auto', maxHeight: '50px' }} /> {JSON.parse(sessionStorage.getItem('organisation')).name}</h3>
                     <p className="m-4">Users who have not yet been approved will not show in this list</p>
                 </>
             }
@@ -174,6 +200,7 @@ const OrgUsers = () => {
                 />
             )}
         </div>
+        </>
     );
 }
 
