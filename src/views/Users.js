@@ -5,6 +5,7 @@ import { getConfig } from "../config";
 import { DataGrid } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import jwt_decode from "jwt-decode";
 
 const OrgUsers = () => {
@@ -22,6 +23,70 @@ const OrgUsers = () => {
         error: null,
     });
 
+
+    const approveInvitation = async (userID) => {
+        try {
+            const token = await getAccessTokenSilently();
+            const updateUser = await fetch(`${apiOrigin}/update/user`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userID,
+                    data:{
+                        app_metadata: { adminApproved: true }
+                    }
+                })
+            });
+            const updateResData = await updateUser.json();
+
+            // getOrgsData();
+        } catch (error) {
+            setState({
+                ...state,
+                error: error.error,
+            });
+        }
+    }
+
+    const triggerResetPassword = async (id) => {
+        console.log ('start: reset password', id)
+      
+        const token = await getAccessTokenSilently();
+        const access_token = jwt_decode(token);
+        // const current_organisation = sessionStorage.getItem("organisationId") ? sessionStorage.getItem("organisationId") : access_token["https://advertise0.com/current_organisation"].id;
+        const changePassword = await fetch(`${apiOrigin}/password/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            method: "POST"
+        });
+        const responseData = await changePassword.json();
+    }
+
+
+    const renderActionButton = (params) => {
+        return (
+            <strong>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    style={{ marginLeft: 16 }}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        triggerResetPassword(params.row.id);
+                        console.log ('params ', params.row.id)
+                        
+                    }}
+                >
+                    Reset password
+                </Button>
+            </strong>
+        )
+    }
     const columns = [
         { field: 'id', headerName: 'ID', width: 250 },
         {
@@ -35,8 +100,10 @@ const OrgUsers = () => {
             }
         },
         { field: 'name', headerName: 'Name', width: "200" },
-        { field: 'email', headerName: 'Email', width: "600" }
+        { field: 'email', headerName: 'Email', width: "400" },
+        { field: 'action', headerName: 'Action', width: "200", renderCell: renderActionButton, disableClickEventBubbling: true}
     ];
+
 
     useEffect(() => {
         const getOrgsData = async () => {

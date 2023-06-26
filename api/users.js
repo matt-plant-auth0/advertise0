@@ -79,6 +79,24 @@ const getRoles = async (req, res) => {
     res.send(data);
 }
 
+// trigger reset password
+const changePassword = async (req, res) => {
+
+    const userInfo = await request(`https://${authConfig.domain}/api/v2/users/${req.params.id}`, 'GET', null);
+    // res.send(userInfo);
+
+    let currentIdentity = userInfo.data.identities.filter ((identity, i) => req.params.id.indexOf (identity.user_id) > -1);
+
+    const resetPassword = await request(`https://${authConfig.domain}/dbconnections/change_password`, 'POST', {
+        client_id: '',
+        email: userInfo.data.email,
+        connection: currentIdentity.connection
+    });
+    
+    res.send({resetPassword, email: userInfo.data.email, connection: currentIdentity});
+
+}
+
 module.exports = {
     createUser,
     getUsers,
@@ -86,5 +104,6 @@ module.exports = {
     getUser,
     updateUser,
     deleteUser,
+    changePassword,
     getRoles
 };

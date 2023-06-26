@@ -267,7 +267,7 @@ const OrganisationsModification = () => {
                     <div>
                         <TextField
                             name="fname"
-                            label="First Name"
+                            label="Display Name"
                             size="small"
                             type="text"
                             value={formValues.fname}
@@ -275,7 +275,7 @@ const OrganisationsModification = () => {
                         />
                         <TextField
                             name="lname"
-                            label="Last Name"
+                            label="Logo"
                             size="small"
                             type="text"
                             value={formValues.lname}
@@ -285,11 +285,19 @@ const OrganisationsModification = () => {
                     <div>
                         <TextField
                             name="email"
-                            label="Email"
+                            label="Primary Color"
                             size="small"
                             type="email"
                             value={formValues.email}
                             onChange={handleInputChange}
+                        />
+                        <TextField
+                            name="org"
+                            label="Background Color"
+                            size="small"
+                            type="text"
+                            value={formValues.organisationId}
+                            disabled
                         />
                         <TextField
                             name="org"
@@ -311,7 +319,7 @@ const OrganisationsModification = () => {
                 </Box>
             }
             {state.showResult &&
-                <h3 className="m-4">Invitations</h3>
+                <h3 className="m-4">Metadata</h3>
             }
             {state.showResult && (
                 <DataGrid

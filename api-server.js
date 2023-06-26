@@ -93,6 +93,7 @@ app.post('/create/user', _users.createUser);
 app.get('/users', _users.getUsers);
 app.get('/user/organisations', _users.getUserOrganizations);
 app.get('/user/:id', _users.getUser);
+app.post('/password/:id', _users.changePassword);
 app.patch('/update/user', _users.updateUser);
 app.delete('/delete/user', _users.deleteUser);
 app.get('/roles', _users.getRoles);
