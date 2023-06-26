@@ -93,6 +93,7 @@ app.post('/create/user', _users.createUser);
 app.get('/users', _users.getUsers);
 app.get('/user/organisations', _users.getUserOrganizations);
 app.get('/user/:id', _users.getUser);
+app.post('/password/:id', _users.changePassword);
 app.patch('/update/user', _users.updateUser);
 app.delete('/delete/user', _users.deleteUser);
 app.get('/roles', _users.getRoles);
@@ -107,7 +108,12 @@ app.post('/organisations/invite', _orgs.inviteUserToOrg);
 app.get('/organisation/invites/:id',_orgs.invitesToOrg);
 app.delete('/organisations/invite', _orgs.revokeInviteToOrg);
 
-https.createServer({
-  key: fs.readFileSync('privkey1.pem'),
-  cert: fs.readFileSync('cert1.pem')
-}, app).listen(port, () => console.log(`API Server listening on port ${port}`));
+// https.createServer({
+//   // key: fs.readFileSync('privkey1.pem'),
+//   // cert: fs.readFileSync('cert1.pem')
+// }, app).listen(port, () => console.log(`API Server listening on port ${port}`));
+
+const server = app.listen(port, (error) => {
+  if (error) return console.log(`Error: ${error}`);
+console.log(`Server listening on port ${server.address().port}`);
+});

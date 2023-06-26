@@ -14,6 +14,7 @@ import AllUsers from "./views/AllUsers";
 import Users from "./views/Users";
 import Organisation from "./views/Organisation";
 import OrganisationsInvitation from "./views/Invitation";
+import OrganisationsModification from "./views/Modify";
 import User from "./views/User";
 import { useAuth0 } from "@auth0/auth0-react";
 import history from "./utils/history";
@@ -52,6 +53,7 @@ const App = () => {
             <Route path="/org-users" component={Users} />
             <Route path="/organisation/:id" component={Organisation} />
             <Route path="/invite" component={OrganisationsInvitation} />
+            <Route path="/modify" component={OrganisationsModification} />
             <Route path="/login" component={Login} />
         </Switch>
       </div>
