@@ -90,7 +90,7 @@ const NavBar = () => {
                   Home
                 </NavLink>
               </NavItem>
-              {isAuthenticated && state.isAdmin && (
+              {isAuthenticated && state?.isAdmin && (
                 <NavItem>
                   <NavLink
                     tag={RouterNavLink}
@@ -102,7 +102,7 @@ const NavBar = () => {
                   </NavLink>
                 </NavItem>
               )}
-              {isAuthenticated && state.isAdmin && (
+              {isAuthenticated && state?.isAdmin && (
                 <NavItem>
                   <NavLink
                     tag={RouterNavLink}
@@ -114,7 +114,7 @@ const NavBar = () => {
                   </NavLink>
                 </NavItem>
               )}
-              {isAuthenticated && state.isOrgAdmin && (
+              {isAuthenticated && state?.isOrgAdmin && (
                 <NavItem>
                   <NavLink
                     tag={RouterNavLink}
@@ -126,7 +126,7 @@ const NavBar = () => {
                   </NavLink>
                 </NavItem>
               )}
-              {isAuthenticated && state.isAdmin || isAuthenticated && state.isOrgAdmin && (
+              {isAuthenticated && state?.isAdmin || isAuthenticated && state?.isOrgAdmin && (
                 <NavItem>
                   <NavLink
                     tag={RouterNavLink}
@@ -147,7 +147,7 @@ const NavBar = () => {
                     exact
                     activeClassName="router-link-exact-active"
                   >
-                    Select Organisation (current: <b>{ state.current_organisation.display_name }</b>)
+                    Select Organisation (current: <b>{ state?.current_organisation?.display_name }</b>)
                   </NavLink>
                 </NavItem>
               )}
@@ -160,7 +160,7 @@ const NavBar = () => {
                     color="primary"
                     className="btn-margin"
                     onClick={() => loginWithRedirect({
-                      organization: "org_wqp0oJUwA3N4B502"
+                      organization: "org_VJgDsCN2VxMpuAz0"
                     })}
                   >
                     Log in
@@ -206,7 +206,7 @@ const NavBar = () => {
                     color="primary"
                     block
                     onClick={() => loginWithRedirect({
-                      organization: "org_wqp0oJUwA3N4B502"
+                      organization: "org_VJgDsCN2VxMpuAz0"
                     })}
                   >
                     Log in

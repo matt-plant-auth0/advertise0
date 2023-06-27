@@ -8,7 +8,8 @@ exports.onExecutePostLogin = async (event, api) => {
   const ManagementClient = require('auth0').ManagementClient;
 
     const management = new ManagementClient({
-      domain: 'advertise0.eu.auth0.com',
+      // domain: 'advertise0.eu.auth0.com',
+      domain: 'adhoc0.dwayne.fun',
 		  clientId: 'MANAGEMENT_API_APP_CLIENT_ID',
 		  clientSecret: 'MANAGEMENT_API_APP_CLIENT_SECRET'
     });

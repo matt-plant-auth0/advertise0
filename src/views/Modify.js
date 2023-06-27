@@ -9,11 +9,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Select from '@mui/material/Select';
 
-import InputLabel from '@mui/material/InputLabel';
-
-import MenuItem from '@mui/material/MenuItem';
-
-const OrganisationsInvitation = () => {
+const OrganisationsModification = () => {
     const { apiOrigin, audience } = getConfig();
 
     const {
@@ -33,41 +29,13 @@ const OrganisationsInvitation = () => {
         showResult: false,
         apiData: [],
         error: null,
-        roles: []
+        roles: null
     });
 
     const organisation = sessionStorage.getItem("organisation") ? JSON.parse(sessionStorage.getItem("organisation")).display_name : "Null";
 
     const [formValues, setFormValues] = useState(defaultValues)
 
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                width: 250,
-            },
-        },
-    };
-
-    const [InviteRole, setInviteRole] = React.useState([]);
-
-    const handleSelectChange = (e) => {
-        const {
-            target: { value },
-        } = e;
-        setInviteRole(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-
-        setFormValues({
-            ...formValues,
-            role: InviteRole,
-        });
-
-    };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormValues({
@@ -119,15 +87,12 @@ const OrganisationsInvitation = () => {
                 ...state,
                 roles: responseData.data
             });
-            sessionStorage.setItem('roles', JSON.stringify(responseData.data))
         } catch (error) {
             console.log(error);
         }
     }
 
     const getOrgsData = async () => {
-        ;
-
         try {
             const token = await getAccessTokenSilently();
             const invitation = await fetch(`${apiOrigin}/organisation/invites/${sessionStorage.getItem("organisationId")}`, {
@@ -166,7 +131,7 @@ const OrganisationsInvitation = () => {
                     }
                 });
                 const userDataResData = await userData.json();
-                if (!userDataResData.data.app_metadata?.adminApproved) {
+                if(!userDataResData.data.app_metadata?.adminApproved){
                     rows.push({
                         id: user.user_id,
                         status: 'Pending admin approval',
@@ -190,7 +155,6 @@ const OrganisationsInvitation = () => {
             });
         }
     };
-
 
     const isInvitationExpired = (expiryTime) => {
         let currentTimeUnix = new Date().getTime();
@@ -235,7 +199,7 @@ const OrganisationsInvitation = () => {
                 },
                 body: JSON.stringify({
                     user_id: userID,
-                    data: {
+                    data:{
                         app_metadata: { adminApproved: true }
                     }
                 })
@@ -253,7 +217,6 @@ const OrganisationsInvitation = () => {
 
     useEffect(() => {
         getOrgsData();
-        getRoles()
     }, [getAccessTokenSilently]);
 
     const renderActionButton = (params) => {
@@ -266,9 +229,9 @@ const OrganisationsInvitation = () => {
                     style={{ marginLeft: 16 }}
                     onClick={(e) => {
                         e.preventDefault();
-                        if (params.row.action === 'Approve Invitation') {
+                        if(params.row.action === 'Approve Invitation'){
                             approveInvitation(params.row.id);
-                        } else {
+                        }else{
                             revokeInvitation(params.row.id);
                         }
                     }}
@@ -285,7 +248,7 @@ const OrganisationsInvitation = () => {
         { field: 'status', headerName: 'Status', width: 200 },
         { field: 'created_at', headerName: 'Created At', width: 200 },
         { field: 'created_by', headerName: 'Created By', width: 200 },
-        { field: 'action', headerName: 'Action', width: 200, renderCell: renderActionButton, disableClickEventBubbling: true }
+        { field: 'action', headerName: 'Action', width: 200, renderCell: renderActionButton, disableClickEventBubbling: true}
     ];
 
     return (
@@ -300,11 +263,11 @@ const OrganisationsInvitation = () => {
                     noValidate
                     autoComplete="off"
                 >
-                    <h3 className="m-4">Invite a user to join the {organisation} organisation</h3>
+                    <h3 className="m-4">Modify the {organisation} organisation</h3>
                     <div>
                         <TextField
                             name="fname"
-                            label="First Name"
+                            label="Display Name"
                             size="small"
                             type="text"
                             value={formValues.fname}
@@ -312,7 +275,7 @@ const OrganisationsInvitation = () => {
                         />
                         <TextField
                             name="lname"
-                            label="Last Name"
+                            label="Logo"
                             size="small"
                             type="text"
                             value={formValues.lname}
@@ -322,11 +285,19 @@ const OrganisationsInvitation = () => {
                     <div>
                         <TextField
                             name="email"
-                            label="Email"
+                            label="Primary Color"
                             size="small"
                             type="email"
                             value={formValues.email}
                             onChange={handleInputChange}
+                        />
+                        <TextField
+                            name="org"
+                            label="Background Color"
+                            size="small"
+                            type="text"
+                            value={formValues.organisationId}
+                            disabled
                         />
                         <TextField
                             name="org"
@@ -336,21 +307,6 @@ const OrganisationsInvitation = () => {
                             value={formValues.organisationId}
                             disabled
                         />
-                    </div>
-
-                    <InputLabel id="demo-multiple-role-label">Roles</InputLabel>
-                    <Select
-                        multiple
-                        label="Select roles ..."
-
-                        labelId="demo-multiple-role-label"
-                        onChange={handleSelectChange}
-                        value={InviteRole}
-                        name="role"
-                        MenuProps={MenuProps}>
-                        {JSON.parse(sessionStorage.getItem('roles')).map((role, i) => <MenuItem key={i} value={role.id}> {role.name}</MenuItem>)}
-                    </Select>
-                    <div>
                     </div>
                     <Button disabled={!formValues.fname && !formValues.lname && !formValues.email && !formValues.email} className="mt-4" variant="contained" color="primary" type="submit">
                         Submit
@@ -363,33 +319,33 @@ const OrganisationsInvitation = () => {
                 </Box>
             }
             {state.showResult &&
-                <h3 className="m-4">Invitations</h3>
+                <h3 className="m-4">Metadata</h3>
             }
             {state.showResult && (
                 <DataGrid
-                    rows={state.apiData}
-                    columns={columns}
-                    pageSize={5}
-                    getCellClassName={(params) => {
-                        if (params.field !== 'status' || params.value == null) {
-                            return '';
-                        }
+                            rows={state.apiData}
+                            columns={columns}
+                            pageSize={5}
+                            getCellClassName={(params) => {
+                                if (params.field !== 'status' || params.value == null) {
+                                    return '';
+                                }
 
-                        if (params.value === 'Invitation expired') {
-                            return 'status-red';
-                        } else if (params.value === 'Pending admin approval') {
-                            return 'status-green';
-                        } else {
-                            return 'status-amber';
-                        }
+                                if (params.value === 'Invitation expired') {
+                                    return 'status-red';
+                                }else if(params.value === 'Pending admin approval'){
+                                    return 'status-green';
+                                } else {
+                                    return 'status-amber';
+                                }
 
-                    }} />
-
+                            } } />
+                
             )}
         </div>
     );
 }
 
-export default withAuthenticationRequired(OrganisationsInvitation, {
+export default withAuthenticationRequired(OrganisationsModification, {
     onRedirecting: () => <Loading />,
 });

@@ -5,9 +5,13 @@ import { getConfig } from "../config";
 import { DataGrid } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import jwt_decode from "jwt-decode";
+import { message } from 'antd';
 
 const OrgUsers = () => {
+
+    const [messageApi, contextHolder] = message.useMessage();
     const { apiOrigin, audience } = getConfig();
 
     const {
@@ -22,20 +26,167 @@ const OrgUsers = () => {
         error: null,
     });
 
+
+    const approveInvitation = async (userID) => {
+        try {
+            const token = await getAccessTokenSilently();
+            const updateUser = await fetch(`${apiOrigin}/update/user`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: userID,
+                    data: {
+                        app_metadata: { adminApproved: true }
+                    }
+                })
+            });
+            const updateResData = await updateUser.json();
+
+            // getOrgsData();
+        } catch (error) {
+            setState({
+                ...state,
+                error: error.error,
+            });
+        }
+    }
+
+    const triggerResetPassword = async (id) => {
+
+        messageApi.open({
+            key: 'trigger-password-reset',
+            type: 'loading',
+            content: 'sending password reset email ...',
+        });
+
+
+        const token = await getAccessTokenSilently();
+        const access_token = jwt_decode(token);
+        // const current_organisation = sessionStorage.getItem("organisationId") ? sessionStorage.getItem("organisationId") : access_token["https://advertise0.com/current_organisation"].id;
+        const changePassword = await fetch(`${apiOrigin}/password/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            method: "POST"
+        });
+        const responseData = await changePassword.json();
+
+        if (responseData._success) {
+            messageApi.open({
+                key: 'trigger-password-reset',
+                type: 'success',
+                content: 'Password reset email sent!',
+                duration: 2,
+            });
+        } else {
+
+            messageApi.open({
+                type: 'error',
+                content: responseData.error,
+                duration: 5,
+            });
+
+        }
+
+    }
+
+    const triggerRevokeMemnbership = async (id) => {
+        messageApi.open({
+            key: 'trigger-revoke-membership',
+            type: 'loading',
+            content: 'revoking membership ...',
+        });
+
+
+        const token = await getAccessTokenSilently();
+        const access_token = jwt_decode(token);
+        // const current_organisation = sessionStorage.getItem("organisationId") ? sessionStorage.getItem("organisationId") : access_token["https://advertise0.com/current_organisation"].id;
+        const revokeMembership = await fetch(`${apiOrigin}/organisations/user`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            method: "DELETE",
+            body: JSON.stringify({
+                memebers: [id]
+            })
+        });
+        const responseData = await revokeMembership.json();
+
+        if (responseData._success) {
+            messageApi.open({
+                key: 'trigger-revoke-membership',
+                type: 'success',
+                content: 'Membership revoked!',
+                duration: 2,
+            });
+        } else {
+
+            messageApi.open({
+                type: 'error',
+                content: responseData.error,
+                duration: 5,
+            });
+
+        }
+    }
+
+
+    const renderActionButton = (params) => {
+        return (
+            <strong>
+                <a
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    style={{ marginLeft: 16 }}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        triggerResetPassword(params.row.id);
+                        console.log('params ', params.row.id)
+
+                    }}
+                >
+                    Reset password
+                </a>
+                &nbsp;|&nbsp;
+                <a
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    style={{ marginLeft: 16 }}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        triggerRevokeMemnbership(params.row.id);
+                        console.log('params ', params.row.id)
+
+                    }}
+                >
+                    Revoke membership
+                </a>
+            </strong>
+
+        )
+    }
     const columns = [
         { field: 'id', headerName: 'ID', width: 250 },
-        { field: 'picture', headerName: 'Picture', width: 60,
-            renderCell: (params)=>{
+        {
+            field: 'picture', headerName: 'Picture', width: 60,
+            renderCell: (params) => {
                 return (
                     <div class="d-flex justify-content-center">
-                        <img style={{'border-radius': '50%'}} src={params.row.picture} alt='' height={30} />
+                        <img style={{ 'border-radius': '50%' }} src={params.row.picture} alt='' height={30} />
                     </div>
                 )
             }
         },
         { field: 'name', headerName: 'Name', width: "200" },
-        { field: 'email', headerName: 'Email', width: "600" }
+        { field: 'email', headerName: 'Email', width: "400" },
+        { field: 'action', headerName: 'Action', width: "200", renderCell: renderActionButton, disableClickEventBubbling: true }
     ];
+
 
     useEffect(() => {
         const getOrgsData = async () => {
@@ -60,12 +211,13 @@ const OrgUsers = () => {
                         }
                     });
                     const userResData = await user.json();
-                    if(userResData.data.app_metadata?.adminApproved){
+                    if (userResData.data.app_metadata?.adminApproved) {
                         rows.push({
                             id: org.user_id,
                             picture: org.picture,
                             name: org.name,
-                            email: org.email
+                            email: org.email,
+
                         });
                     }
                 }
@@ -85,14 +237,18 @@ const OrgUsers = () => {
     }, [getAccessTokenSilently]);
 
     return (
-        <div className="ml-5 mr-5" style={{ height: '100%' }}>
+        <>  {contextHolder}        <div className="ml-5 mr-5" style={{ height: '100%' }}>
             {!state.showResult &&
                 <Box sx={{ display: 'flex' }}>
                     <CircularProgress />
                 </Box>
             }
-            {state.showResult && 
-                <h3 className="m-4">List of members of your organisation</h3>
+            {state.showResult &&
+                <>
+                    <h3 className="m-4">List of members of your organisation</h3>
+                    <h3 className="m-4"> <img src={JSON.parse(sessionStorage.getItem('organisation')).logo} style={{ width: 'auto', maxHeight: '50px' }} /> {JSON.parse(sessionStorage.getItem('organisation')).name}</h3>
+                    <p className="m-4">Users who have not yet been approved will not show in this list</p>
+                </>
             }
             {state.showResult && (
                 <DataGrid
@@ -101,6 +257,7 @@ const OrgUsers = () => {
                 />
             )}
         </div>
+        </>
     );
 }
 
