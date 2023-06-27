@@ -11045,3 +11045,8 @@
   "integrity" "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="
   "resolved" "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   "version" "0.1.0"
+
+"zlib@^1.0.5":
+  "integrity" "sha512-40fpE2II+Cd3k8HWTWONfeKE2jL+P42iWJ1zzps5W51qcTsOUKM5Q5m2PFb0CLxlmFAaUuUdJGc3OfZy947v0w=="
+  "resolved" "https://registry.npmjs.org/zlib/-/zlib-1.0.5.tgz"
+  "version" "1.0.5"

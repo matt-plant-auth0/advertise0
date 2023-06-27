@@ -138,6 +138,14 @@ const revokeInviteToOrg = async (req, res) => {
     'DELETE', null);
     res.send(data);
 }
+const revokeOrgMembership = async (req, res) => {
+    console.log(req.body);
+    const data = await request(`https://${authConfig.domain}/api/v2/organizations/${req.body.organisationId}/members`, 
+    'DELETE', {
+        members: req.body.members
+    });
+    res.send(data);
+}
 
 module.exports = {
     createOrganisation,
@@ -147,5 +155,6 @@ module.exports = {
     getMembersOfOrganisation,
     getOrganisations,
     assignUserToOrganization,
-    revokeInviteToOrg
+    revokeInviteToOrg,
+    revokeOrgMembership
 };

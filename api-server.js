@@ -107,6 +107,7 @@ app.get('/organisations', _orgs.getOrganisations);
 app.post('/organisations/invite', _orgs.inviteUserToOrg);
 app.get('/organisation/invites/:id',_orgs.invitesToOrg);
 app.delete('/organisations/invite', _orgs.revokeInviteToOrg);
+app.delete('/organisations/user', _orgs.revokeOrgMembership);
 
 // https.createServer({
 //   // key: fs.readFileSync('privkey1.pem'),

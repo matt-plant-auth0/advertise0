@@ -88,7 +88,7 @@ const changePassword = async (req, res) => {
     let currentIdentity = userInfo.data.identities.filter ((identity, i) => req.params.id.indexOf (identity.user_id) > -1)[0];
 
     const resetPassword = await request(`https://${authConfig.domain}/dbconnections/change_password`, 'POST', {
-        // ! TO DO add client ID
+        // ! TODO add client ID
         client_id: '',
         email: userInfo.data.email,
         connection: currentIdentity.connection
