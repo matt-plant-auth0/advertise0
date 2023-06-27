@@ -9,6 +9,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import CircularProgress from '@mui/material/CircularProgress';
 import Select from '@mui/material/Select';
 
+import InputLabel from '@mui/material/InputLabel';
+
 import MenuItem from '@mui/material/MenuItem';
 
 const OrganisationsInvitation = () => {
@@ -52,22 +54,22 @@ const OrganisationsInvitation = () => {
     const [InviteRole, setInviteRole] = React.useState([]);
 
     const handleSelectChange = (e) => {
-      const {
-        target: { value },
-      } = e;
-      setInviteRole(
-        // On autofill we get a stringified value.
-        typeof value === 'string' ? value.split(',') : value,
-      );
+        const {
+            target: { value },
+        } = e;
+        setInviteRole(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
 
-      setFormValues({
-        ...formValues,
-        role: InviteRole,
-    });
+        setFormValues({
+            ...formValues,
+            role: InviteRole,
+        });
 
     };
     const handleInputChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setFormValues({
             ...formValues,
             [name]: value,
@@ -335,11 +337,17 @@ const OrganisationsInvitation = () => {
                             disabled
                         />
                     </div>
+
+                    <InputLabel id="demo-multiple-role-label">Roles</InputLabel>
                     <Select
                         multiple
+                        label="Select roles ..."
+
+                        labelId="demo-multiple-role-label"
                         onChange={handleSelectChange}
                         value={InviteRole}
-                        name="role">
+                        name="role"
+                        MenuProps={MenuProps}>
                         {JSON.parse(sessionStorage.getItem('roles')).map((role, i) => <MenuItem key={i} value={role.id}> {role.name}</MenuItem>)}
                     </Select>
                     <div>
