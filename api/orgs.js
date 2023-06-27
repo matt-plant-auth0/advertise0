@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 const _m2m = require('./m2m_token');
 const authConfig = require("./../src/auth_config.json");
 
-const request = async (url, method, body) => {
+const request = async (url, method = '', body) => {
     const token = await _m2m.getToken();
     // console.log ('m2 token' , token)
     let options = {
@@ -80,7 +80,12 @@ const assignConnectionsToOrganisation = async (req, res) => {
 };
 
 const inviteUserToOrg = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
+
+    // get organisation connections
+
+    const connections = await request(`https://${authConfig.domain}/api/v2/organizations/${req.body.organisationId}/enabled_connections`);
+
     const data = await request(`https://${authConfig.domain}/api/v2/organizations/${req.body.organisationId}/invitations`, 
     'POST', {
         "inviter": {
@@ -96,6 +101,7 @@ const inviteUserToOrg = async (req, res) => {
         "app_metadata": {
             adminApproved: req.body.inviter === 'Steris Admins' ? true: false
         },
+        "connection_id": connections.connection_id,
         "ttl_sec": 30,
         "client_id": authConfig.clientId,
         "send_invitation_email": true
@@ -132,6 +138,14 @@ const revokeInviteToOrg = async (req, res) => {
     'DELETE', null);
     res.send(data);
 }
+const revokeOrgMembership = async (req, res) => {
+    console.log(req.body);
+    const data = await request(`https://${authConfig.domain}/api/v2/organizations/${req.body.organisationId}/members`, 
+    'DELETE', {
+        members: req.body.members
+    });
+    res.send(data);
+}
 
 module.exports = {
     createOrganisation,
@@ -141,5 +155,6 @@ module.exports = {
     getMembersOfOrganisation,
     getOrganisations,
     assignUserToOrganization,
-    revokeInviteToOrg
+    revokeInviteToOrg,
+    revokeOrgMembership
 };

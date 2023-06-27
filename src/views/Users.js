@@ -81,22 +81,63 @@ const OrgUsers = () => {
                 content: 'Password reset email sent!',
                 duration: 2,
             });
-        }else {
+        } else {
+
             messageApi.open({
-                key: 'trigger-password-reset',
                 type: 'error',
-                content: "That did't work please try again.",
-                duration: 2,
+                content: responseData.error,
+                duration: 5,
             });
+
         }
 
+    }
+
+    const triggerRevokeMemnbership = async (id) => {
+        messageApi.open({
+            key: 'trigger-revoke-membership',
+            type: 'loading',
+            content: 'revoking membership ...',
+        });
+
+
+        const token = await getAccessTokenSilently();
+        const access_token = jwt_decode(token);
+        // const current_organisation = sessionStorage.getItem("organisationId") ? sessionStorage.getItem("organisationId") : access_token["https://advertise0.com/current_organisation"].id;
+        const revokeMembership = await fetch(`${apiOrigin}/organisations/user`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            method: "DELETE",
+            body: JSON.stringify({
+                memebers: [id]
+            })
+        });
+        const responseData = await revokeMembership.json();
+
+        if (responseData._success) {
+            messageApi.open({
+                key: 'trigger-revoke-membership',
+                type: 'success',
+                content: 'Membership revoked!',
+                duration: 2,
+            });
+        } else {
+
+            messageApi.open({
+                type: 'error',
+                content: responseData.error,
+                duration: 5,
+            });
+
+        }
     }
 
 
     const renderActionButton = (params) => {
         return (
             <strong>
-                <Button
+                <a
                     variant="contained"
                     color="primary"
                     size="small"
@@ -109,8 +150,24 @@ const OrgUsers = () => {
                     }}
                 >
                     Reset password
-                </Button>
+                </a>
+                &nbsp;|&nbsp;
+                <a
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    style={{ marginLeft: 16 }}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        triggerRevokeMemnbership(params.row.id);
+                        console.log('params ', params.row.id)
+
+                    }}
+                >
+                    Revoke membership
+                </a>
             </strong>
+
         )
     }
     const columns = [
